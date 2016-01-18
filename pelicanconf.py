@@ -15,6 +15,8 @@ LOCALE = ('en_GB.utf8')
 
 THEME='./clean-theme'
 
+#COLOR_SCHEME_CSS='github.css'
+
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
