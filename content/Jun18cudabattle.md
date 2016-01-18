@@ -1,4 +1,4 @@
-Title: Getting Theano + CUDA working on a laptop with two GPUs
+Title: Getting CUDA working on a laptop with two GPUs
 Date: 2016-01-18
 Category: cuda
 Tags: cuda, neural networks
