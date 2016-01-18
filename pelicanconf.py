@@ -11,6 +11,7 @@ PATH = 'content'
 TIMEZONE = 'Europe/Warsaw'
 
 DEFAULT_LANG = 'en'
+LOCALE = ('en_GB.utf8')
 
 THEME='./clean-theme'
 
@@ -35,3 +36,4 @@ DEFAULT_PAGINATION = 3
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
