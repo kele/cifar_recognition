@@ -28,7 +28,8 @@ def main_mnist():
         network=network,
         hyperparams=hyperparams,
         num_epochs=20,
-        verbose=True)
+        verbose=2,
+        patience=4)
     print('Training finished')
 
 
@@ -49,14 +50,16 @@ def main_cifar():
     network = cifar.network.build_cnn_network(input_var, batch_size=BATCH_SIZE)
 
     print('Starting training...')
-    engine.train(
-        input_var=input_var,
-        targets_var=targets_var,
-        data=cifar.data.load_datastream(BATCH_SIZE),
-        network=network,
-        hyperparams=hyperparams,
-        num_epochs=100,
-        verbose=True)
+    _, test_acc = \
+        engine.train(
+            input_var=input_var,
+            targets_var=targets_var,
+            data=cifar.data.load_datastream(BATCH_SIZE),
+            network=network,
+            hyperparams=hyperparams,
+            num_epochs=100,
+            verbose=1,
+            patience=4)
     print('Training finished')
 
 

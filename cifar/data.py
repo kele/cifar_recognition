@@ -25,7 +25,8 @@ def load_datastream(train_batch_size=100,
         iteration_scheme=ShuffledScheme(cifar_train.num_examples, train_batch_size)
     )
 
-    cifar_validation = CIFAR10(('train',), subset=slice(training_set_size, validation_set_size))
+    cifar_validation = CIFAR10(('train',), subset=slice(training_set_size,
+                                                        training_set_size + validation_set_size))
     cifar_validation_stream = DataStream.default_stream(
         cifar_validation,
         iteration_scheme=SequentialScheme(cifar_validation.num_examples, train_batch_size)

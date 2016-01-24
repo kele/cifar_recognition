@@ -8,9 +8,8 @@ import lasagne
 import numpy as np
 
 
-# TODO: make a doc comment here
-# TODO: refactor this code
-def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, verbose=False):
+def train(input_var, targets_var, data, network, hyperparams,
+          num_epochs=100, verbose=0, patience=5):
     if verbose:
         print('Compiling stuff...')
 
@@ -43,6 +42,9 @@ def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, ve
     best_acc = 0
 
     for epoch in range(num_epochs):
+        if verbose:
+            print('Epoch {} of {}:'.format(epoch + 1, num_epochs))
+
         try:
             start_time = time.time()
 
@@ -51,8 +53,13 @@ def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, ve
             train_loss = 0
             train_batches = 0
             for inputs, targets in data['train'].get_epoch_iterator():
-                train_loss += train_fn(inputs, targets.ravel())
+                current_train_loss = train_fn(inputs, targets.ravel())
+                train_loss += current_train_loss
                 train_batches += 1
+
+                if verbose >= 2:
+                    print('  (current) training loss: {:10.6f}'.format(float(current_train_loss)))
+
             train_loss = train_loss / train_batches
 
             # Validation
@@ -65,17 +72,22 @@ def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, ve
                 val_acc += acc
                 val_batches += 1
 
+                if verbose >= 2:
+                    print('  validation accuracy: {:.2f}'.format(float(acc)))
+
             val_acc = (val_acc * 100.0) / val_batches
             val_loss = val_loss / val_batches
 
             stop_time = time.time()
             delta_time = stop_time - start_time
 
+            # TODO: time between updates of best accuracy
             prev_best = best_acc
             best_acc = max(best_acc, val_acc)
 
             if verbose:
-                print('Epoch {} of {} took {:.2f}s'.format(epoch + 1, num_epochs, delta_time))
+                print('  --------------------------------')
+                print('  took {:.2f}s'.format(epoch + 1, num_epochs, delta_time))
                 print('  training loss: {:10.6f}'.format(train_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
@@ -86,7 +98,7 @@ def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, ve
             else:
                 stall_count = 0
 
-            if stall_count >= 10:
+            if stall_count >= patience:
                 break
 
         except KeyboardInterrupt:
@@ -102,7 +114,6 @@ def train(input_var, targets_var, data, network, hyperparams, num_epochs=100, ve
         test_loss += loss
         test_acc += acc
         test_batches += 1
-        val_acc += acc
 
     test_acc = test_acc / test_batches * 100.0
     test_loss = test_loss / test_batches
