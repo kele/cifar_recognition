@@ -88,7 +88,7 @@ def train(input_var, targets_var, data, network, hyperparams,
 
             if verbose:
                 print('  --------------------------------')
-                print('  took {:.2f}s'.format(epoch + 1, num_epochs, delta_time))
+                print('  took {:.2f}s'.format(delta_time))
                 print('  training loss: {:10.6f}'.format(train_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
