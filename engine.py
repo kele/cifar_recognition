@@ -7,6 +7,7 @@ import lasagne
 
 import numpy as np
 
+import pickle
 
 def train(input_var, targets_var, data, network, hyperparams,
           num_epochs=100, verbose=0, patience=5):

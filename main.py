@@ -2,6 +2,14 @@
 
 import engine
 import theano.tensor as T
+import lasagne
+import datetime
+import time
+
+
+def save_results(params, filename):
+    import pickle
+    pickle.dump(params, open(filename, 'w'))
 
 
 def main_mnist():
@@ -62,6 +70,9 @@ def main_cifar():
             patience=4)
     print('Training finished')
 
+    t = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d__%H-%M-%S')
+    save_results(lasagne.layers.get_all_param_values(network),
+                 filename='saved_params/{:.2f}accuracy_{}.params'.format(test_acc, t))
 
 if __name__ == '__main__':
     main_cifar()
