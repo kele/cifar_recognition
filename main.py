@@ -12,47 +12,12 @@ def save_results(layers, params, filename):
     pickle.dump((layers, params), open(filename, 'w'))
 
 
-def main_mnist():
-    import mnist.network
-    BATCH_SIZE = 200
-
-    input_var = T.tensor4('inputs')
-    targets_var = T.ivector('targets')
-
-    # MNIST
-    hyperparams = {
-        'learning_rate': 0.01,
-        'momentum': 0.9
-    }
-
-    print('Building the network...')
-    network = mnist.network.build_network(input_var, batch_size=BATCH_SIZE)
-
-    print('Starting training...')
-    engine.train(
-        input_var=input_var,
-        targets_var=targets_var,
-        data=mnist.data.load_datastream(BATCH_SIZE),
-        network=network,
-        hyperparams=hyperparams,
-        num_epochs=20,
-        verbose=2,
-        patience=4)
-    print('Training finished')
-
-
-def main_cifar():
+def main():
     import cifar.network
     BATCH_SIZE = 200
 
     input_var = T.tensor4('inputs')
     targets_var = T.ivector('targets')
-
-    # CIFAR
-    hyperparams = {
-        'learning_rate': 0.01,
-        'momentum': 0.9
-    }
 
     print('Building the network...')
     network, layers = cifar.network.build_cnn_network(input_var, batch_size=BATCH_SIZE)
@@ -79,4 +44,4 @@ def main_cifar():
                  filename='saved_nets/{:.2f}accuracy_{}.params'.format(test_acc, t))
 
 if __name__ == '__main__':
-    main_cifar()
+    main()

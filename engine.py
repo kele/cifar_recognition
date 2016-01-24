@@ -7,7 +7,6 @@ import lasagne
 
 import numpy as np
 
-import pickle
 
 def train(input_var, targets_var, data, network, hyperparams,
           num_epochs=100, verbose=0, patience=5):
@@ -53,10 +52,15 @@ def train(input_var, targets_var, data, network, hyperparams,
             # Training
             train_loss = 0
             train_batches = 0
+            train_min_loss = 1000000
+            train_max_loss = 0
             for inputs, targets in data['train'].get_epoch_iterator():
                 current_train_loss = train_fn(inputs, targets.ravel())
                 train_loss += current_train_loss
                 train_batches += 1
+
+                train_min_loss = min(train_min_loss, current_train_loss)
+                train_max_loss = max(train_max_loss, current_train_loss)
 
                 if verbose >= 2:
                     print('  (current) training loss: {:10.6f}'.format(float(current_train_loss)))
@@ -89,7 +93,8 @@ def train(input_var, targets_var, data, network, hyperparams,
             if verbose:
                 print('  --------------------------------')
                 print('  took {:.2f}s'.format(delta_time))
-                print('  training loss: {:10.6f}'.format(train_loss))
+                print('  training loss (avg): {:10.6f}'.format(train_loss))
+                print('  training loss gap: {:.3f}'.format(train_max_loss - train_min_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
                 print('  best acc so far: {:.2f}'.format(best_acc))
