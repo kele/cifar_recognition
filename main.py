@@ -26,17 +26,30 @@ def main():
     for l in layers:
         print '  ', l['type'], '\n    ', l['args']
 
+    print('Learning schedule:')
+    schedule = [
+        {'num_epochs': 50,
+         'hyperparams': {
+            'learning_rate': 0.01,
+            'momentum': 0.9
+            }}
+    ]
+
+    for s in schedule:
+        print '  ', s
+
     print('Starting training...')
-    _, test_acc = \
-        engine.train(
-            input_var=input_var,
-            targets_var=targets_var,
-            data=cifar.data.load_datastream(BATCH_SIZE),
-            network=network,
-            hyperparams=hyperparams,
-            num_epochs=100,
-            verbose=1,
-            patience=4)
+
+    for s in schedule:
+        _, test_acc = \
+            engine.train(
+                input_var=input_var,
+                targets_var=targets_var,
+                data=cifar.data.load_datastream(BATCH_SIZE),
+                network=network,
+                verbose=1,
+                patience=4,
+                **s)
     print('Training finished')
 
     t = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d__%H-%M-%S')
