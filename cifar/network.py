@@ -3,80 +3,44 @@
 import lasagne
 from cifar.data import DATA_SHAPE
 
+from lasagne.layers import *
+from lasagne.nonlinearities import *
 
-def build_multilayer_network(input_variable, batch_size=None):
-    network = lasagne.layers. \
-        InputLayer(shape=(batch_size,) + DATA_SHAPE,
-                   input_var=input_variable)
-
-    network = lasagne.layers. \
-        DropoutLayer(network,
-                     p=0.2)
-
-    network = lasagne.layers. \
-        DenseLayer(network,
-                   num_units=800,
-                   nonlinearity=lasagne.nonlinearities.rectify)
-
-    network = lasagne.layers. \
-        DropoutLayer(network,
-                     p=0.5)
-
-    network = lasagne.layers. \
-        DenseLayer(network,
-                   num_units=800,
-                   nonlinearity=lasagne.nonlinearities.rectify)
-
-    network = lasagne.layers. \
-        DropoutLayer(network,
-                     p=0.5)
-
-    network = lasagne.layers. \
-        DenseLayer(network,
-                   num_units=10,
-                   nonlinearity=lasagne.nonlinearities.softmax)
-
-    return network
+from network_building.network_building import build_network
 
 
-# TODO: make this more general, use **kwargs for specifying the net architecture
 def build_cnn_network(input_variable, batch_size=None):
-    network = lasagne.layers. \
-        InputLayer(shape=(batch_size,) + DATA_SHAPE,
-                   input_var=input_variable)
+    layers = [
+        {'type': Conv2DLayer,
+         'args': {
+             'num_filters': 32,
+             'filter_size': (5, 5),
+             'nonlinearity': rectify}},
 
-    network = lasagne.layers. \
-        Conv2DLayer(network,
-                    num_filters=128,
-                    filter_size=(5, 5),
-                    nonlinearity=lasagne.nonlinearities.rectify)
+        {'type': MaxPool2DLayer,
+         'args': {'pool_size': (2, 2)}},
 
-    network = lasagne.layers. \
-        MaxPool2DLayer(network,
-                       pool_size=(2, 2))
+        {'type': Conv2DLayer,
+         'args': {
+             'num_filters': 32,
+             'filter_size': (5, 5),
+             'nonlinearity': rectify}},
 
-    network = lasagne.layers. \
-        Conv2DLayer(network,
-                    num_filters=128,
-                    filter_size=(5, 5),
-                    nonlinearity=lasagne.nonlinearities.rectify)
+        {'type': MaxPool2DLayer,
+         'args': {'pool_size': (2, 2)}},
 
-    network = lasagne.layers. \
-        MaxPool2DLayer(network,
-                       pool_size=(2, 2))
+        {'type': DropoutLayer,
+         'args': {'p': 0.5}},
 
-    network = lasagne.layers. \
-        DropoutLayer(network,
-                     p=0.5)
+        {'type': DenseLayer,
+         'args': {
+             'num_units': 256,
+             'nonlinearity': rectify}},
 
-    network = lasagne.layers. \
-        DenseLayer(network,
-                   num_units=256,
-                   nonlinearity=lasagne.nonlinearities.rectify)
+        {'type': DenseLayer,
+         'args': {
+             'num_units': 10,
+             'nonlinearity': softmax}},
+    ]
 
-    network = lasagne.layers. \
-        DenseLayer(network,
-                   num_units=10,
-                   nonlinearity=lasagne.nonlinearities.softmax)
-
-    return network
+    return build_network(layers, input_variable, (batch_size,) + DATA_SHAPE), layers

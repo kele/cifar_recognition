@@ -7,9 +7,9 @@ import datetime
 import time
 
 
-def save_results(params, filename):
+def save_results(layers, params, filename):
     import pickle
-    pickle.dump(params, open(filename, 'w'))
+    pickle.dump((layers, params), open(filename, 'w'))
 
 
 def main_mnist():
@@ -55,7 +55,11 @@ def main_cifar():
     }
 
     print('Building the network...')
-    network = cifar.network.build_cnn_network(input_var, batch_size=BATCH_SIZE)
+    network, layers = cifar.network.build_cnn_network(input_var, batch_size=BATCH_SIZE)
+
+    print('Network:')
+    for l in layers:
+        print '  ', l['type'], '\n    ', l['args']
 
     print('Starting training...')
     _, test_acc = \
@@ -71,8 +75,8 @@ def main_cifar():
     print('Training finished')
 
     t = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d__%H-%M-%S')
-    save_results(lasagne.layers.get_all_param_values(network),
-                 filename='saved_params/{:.2f}accuracy_{}.params'.format(test_acc, t))
+    save_results(layers, params=lasagne.layers.get_all_param_values(network),
+                 filename='saved_nets/{:.2f}accuracy_{}.params'.format(test_acc, t))
 
 if __name__ == '__main__':
     main_cifar()
