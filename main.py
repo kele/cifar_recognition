@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-import mnist.network
 import engine
 import theano.tensor as T
 
 
-def main():
+def main_mnist():
+    import mnist.network
     BATCH_SIZE = 200
 
     input_var = T.tensor4('inputs')
-    results_var = T.ivector('results')
+    targets_var = T.ivector('targets')
 
     # MNIST
     hyperparams = {
@@ -23,7 +23,7 @@ def main():
     print('Starting training...')
     engine.train(
         input_var=input_var,
-        results_var=results_var,
+        targets_var=targets_var,
         data=mnist.data.load_datastream(BATCH_SIZE),
         network=network,
         hyperparams=hyperparams,
@@ -32,5 +32,33 @@ def main():
     print('Training finished')
 
 
+def main_cifar():
+    import cifar.network
+    BATCH_SIZE = 200
+
+    input_var = T.tensor4('inputs')
+    targets_var = T.ivector('targets')
+
+    # CIFAR
+    hyperparams = {
+        'learning_rate': 0.01,
+        'momentum': 0.9
+    }
+
+    print('Building the network...')
+    network = cifar.network.build_cnn_network(input_var, batch_size=BATCH_SIZE)
+
+    print('Starting training...')
+    engine.train(
+        input_var=input_var,
+        targets_var=targets_var,
+        data=cifar.data.load_datastream(BATCH_SIZE),
+        network=network,
+        hyperparams=hyperparams,
+        num_epochs=100,
+        verbose=True)
+    print('Training finished')
+
+
 if __name__ == '__main__':
-    main()
+    main_cifar()
