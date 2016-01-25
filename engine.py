@@ -4,6 +4,8 @@ import time
 import theano
 import theano.tensor as T
 import lasagne
+import lasagne.regularization
+from lasagne.regularization import l2
 
 import numpy as np
 
@@ -15,8 +17,12 @@ def train(input_var, targets_var, data, network, hyperparams,
 
     prediction = lasagne.layers.get_output(network)
     loss = lasagne.objectives.categorical_crossentropy(prediction, targets_var)
-    # TODO: add weight decay here
     loss = loss.mean()
+
+    if 'weight_decay' in hyperparams:
+        loss = loss \
+            + (lasagne.regularization.regularize_network_params(network, l2)
+               * hyperparams['weight_decay'])
 
     params = lasagne.layers.get_all_params(network, trainable=True)
     updates = lasagne.updates.nesterov_momentum(
