@@ -36,7 +36,7 @@ LINKS = (('GitHub link for my CIFAR10 recognition project',
 # Social widget
 SOCIAL = ()
 
-DEFAULT_PAGINATION = 3
+DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
