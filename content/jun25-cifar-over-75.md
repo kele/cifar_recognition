@@ -33,7 +33,7 @@ The main intution behind convolutional layers is as follows. We want to detect a
 it is, we just want to be sure that it exists. There's no difference in
 detecting an edge in the middle of an image or a few pixels to the right.
 Because of that, it makes no sense to keep separate parameters (weights and
-biases) for different networks, just because they're looking in some other place
+biases) for different neurons, just because they're looking in some other place
 for the same thing.
 
 An additional benefit is the fact that since we're sharing the parameters, there
