@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'kele'
 SITENAME = 'making a tiny brain'
-SITEURL = ''
+SITEURL = 'http://kele.github.io/cifar_recognition'
 
 PATH = 'content'
 
@@ -13,9 +13,9 @@ TIMEZONE = 'Europe/Warsaw'
 DEFAULT_LANG = 'en'
 LOCALE = ('en_GB.utf8')
 
-THEME='./clean-theme'
+THEME = './clean-theme'
 
-#COLOR_SCHEME_CSS='github.css'
+# COLOR_SCHEME_CSS='github.css'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -25,7 +25,9 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Neural Networks and Deep Learning by Michael Nielsen',
+LINKS = (('GitHub link for my CIFAR10 recognition project',
+          'https://github.com/kele/cifar_recognition'),
+         ('Neural Networks and Deep Learning by Michael Nielsen',
           'http://neuralnetworksanddeeplearning.com'),
          ('Python.org', 'http://python.org/'),
          ('Jinja2', 'http://jinja.pocoo.org/'),
@@ -37,5 +39,4 @@ SOCIAL = ()
 DEFAULT_PAGINATION = 3
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
-
+# RELATIVE_URLS = True
