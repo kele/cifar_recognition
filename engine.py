@@ -45,7 +45,7 @@ def train(input_var, targets_var, data, network, hyperparams,
     if verbose:
         print('Finally training starts!')
 
-    prev_best = 0
+    prev_best = 100000
     best_train_loss = 0
     best_params = lasagne.layers.get_all_param_values(network)
 
@@ -91,7 +91,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             prev_best = best_train_loss
             best_train_loss = min(best_train_loss, train_loss)
 
-            if prev_best - best_train_loss< 0.001:
+            if prev_best - best_train_loss < 0.001:
                 stall_count += 1
             else:
                 best_params = lasagne.layers.get_all_param_values(network)
