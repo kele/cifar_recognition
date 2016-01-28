@@ -89,7 +89,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             train_loss = train_loss / train_batches
 
             prev_best = best_train_loss
-            best_train_loss = max(best_train_loss, train_loss)
+            best_train_loss = min(best_train_loss, train_loss)
 
             if best_train_loss - prev_best < 0.1:
                 stall_count += 1
