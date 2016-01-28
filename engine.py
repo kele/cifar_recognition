@@ -91,7 +91,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             prev_best = best_train_loss
             best_train_loss = min(best_train_loss, train_loss)
 
-            if best_train_loss - prev_best < 0.1:
+            if prev_best - best_train_loss< 0.001:
                 stall_count += 1
             else:
                 best_params = lasagne.layers.get_all_param_values(network)
