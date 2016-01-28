@@ -46,7 +46,7 @@ def train(input_var, targets_var, data, network, hyperparams,
         print('Finally training starts!')
 
     prev_best = 100000
-    best_train_loss = 0
+    best_train_loss = 100000
     best_params = lasagne.layers.get_all_param_values(network)
 
     iteration_count = 0
