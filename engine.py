@@ -11,7 +11,8 @@ import numpy as np
 
 
 def train(input_var, targets_var, data, network, hyperparams,
-          num_epochs=100, verbose=0, patience=5):
+          num_epochs=100, verbose=0, patience=5, validate_per_batches=None,
+          max_iters=None):
     if verbose:
         print('Compiling stuff...')
 
@@ -46,8 +47,15 @@ def train(input_var, targets_var, data, network, hyperparams,
 
     prev_best = 0
     best_acc = 0
+    best_params = lasagne.layers.get_all_param_values(network)
+
+    iteration_count = 0
+
 
     for epoch in range(num_epochs):
+        if max_iters and iteration_count >= max_iters:
+            break
+
         if verbose:
             print('Epoch {} of {}:'.format(epoch + 1, num_epochs))
 
@@ -60,7 +68,11 @@ def train(input_var, targets_var, data, network, hyperparams,
             train_batches = 0
             train_min_loss = 1000000
             train_max_loss = 0
-            for inputs, targets in data['train'].get_epoch_iterator():
+
+            epoch_iterator = data['train'].get_epoch_iterator()
+            for inputs, targets in epoch_iterator:
+                iteration_count += 1
+
                 current_train_loss = train_fn(inputs, targets.ravel())
                 train_loss += current_train_loss
                 train_batches += 1
@@ -69,7 +81,11 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_max_loss = max(train_max_loss, current_train_loss)
 
                 if verbose >= 2:
-                    print('  (current) training loss: {:10.6f}'.format(float(current_train_loss)))
+                    print('  [{:5}] training loss: {:10.6f} | avg: {:10.6f}'.format(
+                        iteration_count, float(current_train_loss), train_loss / train_batches))
+
+                if max_iters and iteration_count >= max_iters:
+                    break
 
             train_loss = train_loss / train_batches
 
@@ -92,9 +108,14 @@ def train(input_var, targets_var, data, network, hyperparams,
             stop_time = time.time()
             delta_time = stop_time - start_time
 
-            # TODO: time between updates of best accuracy
             prev_best = best_acc
             best_acc = max(best_acc, val_acc)
+
+            if best_acc - prev_best < 0.1:
+                stall_count += 1
+            else:
+                best_params = lasagne.layers.get_all_param_values(network)
+                stall_count = 0
 
             if verbose:
                 print('  --------------------------------')
@@ -104,11 +125,7 @@ def train(input_var, targets_var, data, network, hyperparams,
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
                 print('  best acc so far: {:.2f}'.format(best_acc))
-
-            if best_acc - prev_best < 0.1:
-                stall_count += 1
-            else:
-                stall_count = 0
+                print('  stall_count: {}'.format(stall_count))
 
             if stall_count >= patience:
                 break
@@ -117,6 +134,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             print('Interrupted! Going directly to testing.')
             break
 
+    lasagne.layers.set_all_param_values(network, best_params)
     # Test
     test_loss = 0
     test_acc = 0
