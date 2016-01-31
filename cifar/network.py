@@ -14,6 +14,10 @@ def elu(x):
     return theano.tensor.switch(x > 0, x, theano.tensor.exp(x) - 1)
 
 
+def build(layers, input_var, batch_size):
+    return build_network(layers, input_var, (batch_size,) + DATA_SHAPE)
+
+
 best_network = [
     {'type': DropoutLayer,
         'args': {'p': 0.25}},

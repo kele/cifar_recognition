@@ -25,8 +25,6 @@ def load_network(filename):
 
 
 def main():
-    import cifar.network
-
     full_datastream = cifar.data.load_datastream(BATCH_SIZE)
     small_datastream = cifar.data.load_datastream(BATCH_SIZE,
                                                   training_set_size=4000,
@@ -39,8 +37,8 @@ def main():
     targets_var = T.ivector('targets')
 
     print('Building the network...')
-    network, layers = cifar.network.build_network(cifar.network.best_network,
-                                                  batch_size=BATCH_SIZE)
+    layers = cifar.network.best_network
+    network = cifar.network.build(layers, input_var, batch_size=BATCH_SIZE)
 
     print('Network:')
     for l in layers:
