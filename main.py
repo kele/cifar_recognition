@@ -46,47 +46,9 @@ def main():
 
     basic_lr = 0.01
     schedule = [
-        {'num_epochs': 20,
+        {'num_epochs': 200,
         'hyperparams': {
             'learning_rate': basic_lr,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-        {'num_epochs': 20, # tutaj jeszcze przed chwila bylo 5
-        'hyperparams': {
-            'learning_rate': basic_lr / 2,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-        {'num_epochs': 20,
-        'hyperparams': {
-            'learning_rate': basic_lr / 10,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-        {'num_epochs': 20,
-        'hyperparams': {
-            'learning_rate': basic_lr / 10 / 2,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-        {'num_epochs': 20,
-        'hyperparams': {
-            'learning_rate': basic_lr / 100,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-
-        {'num_epochs': 20,
-        'hyperparams': {
-            'learning_rate': basic_lr / 100 / 2,
-            'weight_decay': 0.001,
-            'momentum': 0.9,
-            }},
-
-        {'num_epochs': 20,
-        'hyperparams': {
-            'learning_rate': basic_lr / 1000,
             'weight_decay': 0.001,
             'momentum': 0.9,
             }},

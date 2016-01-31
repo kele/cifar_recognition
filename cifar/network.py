@@ -60,7 +60,7 @@ best_network = [
 
     {'type': DenseLayer,
         'args': {
-            'num_units': 256,
+            'num_units': 512,
             'nonlinearity': elu}},
 
     {'type': DropoutLayer,
