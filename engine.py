@@ -129,7 +129,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             if verbose:
                 print('  --------------------------------')
                 print('  took {:.2f}s'.format(delta_time))
-                print('  learning_rate {:.10.6f}'.format(learning_rate.get_value()))
+                print('  learning_rate {:10.6f}'.format(learning_rate.get_value()))
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
                 print('  training loss gap: {:.3f}'.format(train_max_loss - train_min_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
