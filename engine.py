@@ -12,7 +12,6 @@ import numpy as np
 
 def train(input_var, targets_var, data, network, hyperparams,
           num_epochs=100, verbose=0, patience=5, validate_per_batches=None,
-          lr_decay=True,
           max_iters=None):
 
     if verbose:
@@ -83,9 +82,10 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_min_loss = min(train_min_loss, current_train_loss)
                 train_max_loss = max(train_max_loss, current_train_loss)
 
-                decay = np.array(1.0 / (max(2.0, 2.0 ** (iteration_count / 10000))),
+                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 10000))),
                                  dtype=theano.config.floatX)
                 learning_rate.set_value(learning_rate.get_value() * decay)
+                print('  learning_rate {:10.10f}'.format(float(learning_rate.get_value().ravel()[0])))
 
                 if verbose >= 2:
                     print('  [{:5}] training loss: {:10.6f} | avg: {:10.6f}'.format(
@@ -129,7 +129,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             if verbose:
                 print('  --------------------------------')
                 print('  took {:.2f}s'.format(delta_time))
-                print('  learning_rate {:10.6f}'.format(learning_rate.get_value()))
+                print('  learning_rate {:10.10f}'.format(float(learning_rate.get_value().ravel()[0])))
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
                 print('  training loss gap: {:.3f}'.format(train_max_loss - train_min_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
