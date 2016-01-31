@@ -12,9 +12,13 @@ import numpy as np
 
 def train(input_var, targets_var, data, network, hyperparams,
           num_epochs=100, verbose=0, patience=5, validate_per_batches=None,
+          lr_decay=True,
           max_iters=None):
+
     if verbose:
         print('Compiling stuff...')
+
+    learning_rate = theano.shared(np.array(hyperparams['learning_rate'], dtype=theano.config.floatX))
 
     prediction = lasagne.layers.get_output(network)
     loss = lasagne.objectives.categorical_crossentropy(prediction, targets_var)
@@ -27,7 +31,7 @@ def train(input_var, targets_var, data, network, hyperparams,
 
     params = lasagne.layers.get_all_params(network, trainable=True)
     updates = lasagne.updates.nesterov_momentum(
-        loss, params, learning_rate=hyperparams['learning_rate'],
+        loss, params, learning_rate=learning_rate,
         momentum=hyperparams['momentum'])
 
     train_fn = theano.function([input_var, targets_var], loss, updates=updates)
@@ -79,6 +83,10 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_min_loss = min(train_min_loss, current_train_loss)
                 train_max_loss = max(train_max_loss, current_train_loss)
 
+                decay = np.array(1.0 / (max(2.0, 2.0 ** (iteration_count / 10000))),
+                                 dtype=theano.config.floatX)
+                learning_rate.set_value(learning_rate.get_value() * decay)
+
                 if verbose >= 2:
                     print('  [{:5}] training loss: {:10.6f} | avg: {:10.6f}'.format(
                         iteration_count, float(current_train_loss), train_loss / train_batches))
@@ -121,6 +129,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             if verbose:
                 print('  --------------------------------')
                 print('  took {:.2f}s'.format(delta_time))
+                print('  learning_rate {:.10.6f}'.format(learning_rate.get_value()[0]))
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
                 print('  training loss gap: {:.3f}'.format(train_max_loss - train_min_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
