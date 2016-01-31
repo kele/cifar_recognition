@@ -82,10 +82,9 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_min_loss = min(train_min_loss, current_train_loss)
                 train_max_loss = max(train_max_loss, current_train_loss)
 
-                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 10000))),
+                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 100))),
                                  dtype=theano.config.floatX)
                 learning_rate.set_value(learning_rate.get_value() * decay)
-                print('  learning_rate {:10.10f}'.format(float(learning_rate.get_value().ravel()[0])))
 
                 if verbose >= 2:
                     print('  [{:5}] training loss: {:10.6f} | avg: {:10.6f}'.format(
