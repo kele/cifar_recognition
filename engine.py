@@ -69,8 +69,6 @@ def train(input_var, targets_var, data, network, hyperparams,
             # Training
             train_loss = 0
             train_batches = 0
-            train_min_loss = 1000000
-            train_max_loss = 0
 
             epoch_iterator = data['train'].get_epoch_iterator()
             for inputs, targets in epoch_iterator:
@@ -79,9 +77,6 @@ def train(input_var, targets_var, data, network, hyperparams,
                 current_train_loss = train_fn(inputs, targets.ravel())
                 train_loss += current_train_loss
                 train_batches += 1
-
-                train_min_loss = min(train_min_loss, current_train_loss)
-                train_max_loss = max(train_max_loss, current_train_loss)
 
                 decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 4000))),
                                  dtype=theano.config.floatX)
@@ -132,7 +127,6 @@ def train(input_var, targets_var, data, network, hyperparams,
                 print('  took {:.2f}s'.format(delta_time))
                 print('  learning_rate {:10.10f}'.format(float(learning_rate.get_value().ravel()[0])))
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
-                print('  training loss gap: {:.3f}'.format(train_max_loss - train_min_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
                 print('  best train loss so far: {:.2f}'.format(best_train_loss))

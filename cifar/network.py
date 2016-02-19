@@ -30,7 +30,7 @@ best_network = [
 
     {'type': Conv2DLayer,
         'args': {
-            'num_filters': 128,
+            'num_filters': 64,
             'filter_size': (5, 5),
             'nonlinearity': rectify}},
 
@@ -57,7 +57,7 @@ best_network = [
 
     {'type': DenseLayer,
         'args': {
-            'num_units': 512,
+            'num_units': 800,
             'nonlinearity': rectify}},
 
     {'type': DropoutLayer,

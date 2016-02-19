@@ -68,7 +68,7 @@ def main():
                 targets_var=targets_var,
                 data=full_datastream,
                 network=network,
-                verbose=1,
+                verbose=2,
                 patience=5,
                 **s)
 
