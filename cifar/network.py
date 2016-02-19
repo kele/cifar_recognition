@@ -24,17 +24,15 @@ best_network = [
 
     {'type': Conv2DLayer,
         'args': {
-            'num_filters': 96,
+            'num_filters': 128,
             'filter_size': (5, 5),
-            'nonlinearity': elu,
-            'pad': 1}},
+            'nonlinearity': rectify}},
 
     {'type': Conv2DLayer,
         'args': {
-            'num_filters': 64,
+            'num_filters': 128,
             'filter_size': (5, 5),
-            'nonlinearity': elu,
-            'pad': 1}},
+            'nonlinearity': rectify}},
 
     {'type': MaxPool2DLayer,
         'args': {'pool_size': (2, 2)}},
@@ -46,8 +44,7 @@ best_network = [
         'args': {
             'num_filters': 64,
             'filter_size': (5, 5),
-            'nonlinearity': elu,
-            'pad': 1}},
+            'nonlinearity': rectify}},
 
     {'type': MaxPool2DLayer,
         'args': {'pool_size': (3, 3), 'stride': 2}},
@@ -61,62 +58,18 @@ best_network = [
     {'type': DenseLayer,
         'args': {
             'num_units': 512,
-            'nonlinearity': elu}},
-
-    {'type': DropoutLayer,
-        'args': {'p': 0.5}},
-
-    {'type': DenseLayer,
-        'args': {
-            'num_units': 10,
-            'nonlinearity': softmax}},
-]
-
-first_network = [
-    {'type': DropoutLayer,
-        'args': {'p': 0.25}},
-
-    {'type': Conv2DLayer,
-        'args': {
-            'num_filters': 128,
-            'filter_size': (5, 5),
             'nonlinearity': rectify}},
 
-    {'type': MaxPool2DLayer,
-        'args': {'pool_size': (2, 2)}},
-
-    {'type': Conv2DLayer,
-        'args': {
-            'num_filters': 128,
-            'filter_size': (5, 5),
-            'nonlinearity': rectify}},
-
-    {'type': MaxPool2DLayer,
-        'args': {'pool_size': (2, 2)}},
-
     {'type': DropoutLayer,
         'args': {'p': 0.5}},
-
-    {'type': Conv2DLayer,
-        'args': {
-            'num_filters': 64,
-            'filter_size': (5, 5),
-            'nonlinearity': rectify,
-            'pad': 1}},
-
-    {'type': MaxPool2DLayer,
-        'args': {'pool_size': (3, 3), 'stride': 2}},
-
-    {'type': DropoutLayer,
-        'args': {'p': 0.5}},
-
-    {'type': FlattenLayer,
-        'args': {'outdim': 2}},
 
     {'type': DenseLayer,
         'args': {
             'num_units': 256,
             'nonlinearity': rectify}},
+
+    {'type': DropoutLayer,
+        'args': {'p': 0.5}},
 
     {'type': DenseLayer,
         'args': {
