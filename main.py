@@ -13,8 +13,8 @@ import cifar.transformations
 
 def random_rotate(img):
     angle = random.random()
-    angle *= 10
-    angle -= 5 # Now angle is in range [-5; 5]
+    angle *= 40
+    angle -= 20 # Now angle is in range [-20; 20]
 
     return img.rotate(angle)
 
