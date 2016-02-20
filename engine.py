@@ -12,7 +12,7 @@ import numpy as np
 
 def train(input_var, targets_var, data, network, hyperparams,
           num_epochs=100, verbose=0, patience=5, validate_per_batches=None,
-          max_iters=None):
+          max_iters=None, augment=None):
 
     if verbose:
         print('Compiling stuff...')
@@ -72,6 +72,10 @@ def train(input_var, targets_var, data, network, hyperparams,
 
             epoch_iterator = data['train'].get_epoch_iterator()
             for inputs, targets in epoch_iterator:
+
+                if augment:
+                    inputs = augment(inputs)
+
                 iteration_count += 1
 
                 current_train_loss = train_fn(inputs, targets.ravel())

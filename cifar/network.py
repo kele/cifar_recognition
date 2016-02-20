@@ -19,8 +19,8 @@ def build(layers, input_var, batch_size):
 
 
 best_network = [
-    {'type': DropoutLayer,
-        'args': {'p': 0.25}},
+    #{'type': DropoutLayer,
+    #    'args': {'p': 0.25}},
 
     {'type': Conv2DLayer,
         'args': {
@@ -37,8 +37,8 @@ best_network = [
     {'type': MaxPool2DLayer,
         'args': {'pool_size': (2, 2)}},
 
-    {'type': DropoutLayer,
-        'args': {'p': 0.5}},
+    #{'type': DropoutLayer,
+    #    'args': {'p': 0.5}},
 
     {'type': Conv2DLayer,
         'args': {
@@ -49,8 +49,8 @@ best_network = [
     {'type': MaxPool2DLayer,
         'args': {'pool_size': (3, 3), 'stride': 2}},
 
-    {'type': DropoutLayer,
-        'args': {'p': 0.5}},
+    #{'type': DropoutLayer,
+    #    'args': {'p': 0.5}},
 
     {'type': FlattenLayer,
         'args': {'outdim': 2}},
