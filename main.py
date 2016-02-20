@@ -10,7 +10,10 @@ import time
 
 import cifar.transformations
 
-disturbers_list = []
+import PIL.ImageOps
+disturbers_list = [
+    (PIL.ImageOps.mirror, 0.5)
+]
 
 def augmentation(batch, train):
     if train:

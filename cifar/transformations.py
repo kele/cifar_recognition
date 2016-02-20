@@ -19,7 +19,6 @@ def augment_data(image_batch, disturbers=None):
             if random.random() <= p:
                 img = d(img)
 
-        img = PIL.ImageOps.equalize(img)
         img = PIL.ImageOps.autocontrast(img)
 
         data = np.array(img).transpose(2, 0, 1)
