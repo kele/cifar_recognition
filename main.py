@@ -8,6 +8,15 @@ import pickle
 import theano.tensor as T
 import time
 
+import cifar.transformations
+
+disturbers_list = []
+
+def augmentation(batch, train):
+    if train:
+        cifar.transformations.augment_data(batch, disturbers_list)
+    else:
+        cifar.transformations.augment_data(batch, None)
 
 BATCH_SIZE = 100
 
@@ -70,6 +79,7 @@ def main():
                 network=network,
                 verbose=2,
                 patience=20,
+                augment=augmentation,
                 **s)
 
         print('Saving results in 5 seconds...')

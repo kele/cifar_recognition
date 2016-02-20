@@ -15,8 +15,8 @@ def load_datastream(train_batch_size=100,
     from fuel.schemes import SequentialScheme, ShuffledScheme
 
     CIFAR10.default_transformers = (
-        (ScaleAndShift, [2.0 / 255.0, -1], {'which_sources': 'features'}),
-        (Cast, [np.float32], {'which_sources': 'features'}),
+        #(ScaleAndShift, [2.0 / 255.0, -1], {'which_sources': 'features'}),
+        #(Cast, [np.float32], {'which_sources': 'features'}),
     )
 
     cifar_train = CIFAR10(('train',), subset=slice(None, training_set_size))
