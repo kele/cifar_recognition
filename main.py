@@ -7,13 +7,24 @@ import lasagne
 import pickle
 import theano.tensor as T
 import time
+import random
 
 import cifar.transformations
 
+def random_rotate(img):
+    angle = random.random()
+    angle *= 10
+    angle -= 5 # Now angle is in range [-5; 5]
+
+    return img.rotate(angle)
+
+
 import PIL.ImageOps
 disturbers_list = [
-    (PIL.ImageOps.mirror, 0.5)
+    (PIL.ImageOps.mirror, 0.5),
+    (random_rotate, 0.5)
 ]
+
 
 def augmentation(batch, train):
     if train:
