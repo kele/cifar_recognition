@@ -9,6 +9,7 @@ def augment_data(image_batch, disturbers=None):
     if disturbers is None:
         disturbers = []
 
+    new = []
     for i in range(len(image_batch)):
         data = image_batch[i]
         data = data.transpose(1, 2, 0)
@@ -19,13 +20,13 @@ def augment_data(image_batch, disturbers=None):
             if random.random() <= p:
                 img = d(img)
 
-        img = PIL.ImageOps.autocontrast(img)
+        #img = PIL.ImageOps.autocontrast(img)
 
-        data = np.array(img).transpose(2, 0, 1)
-        image_batch[i] = data
-        image_batch[i] = image_batch[i] * 2.0/255.0 - 1.0
-        image_batch[i] = image_batch[i].astype(np.float32)
+        data = np.array(img).transpose(2, 0, 1).astype(np.float32)
+        data = data * 2.0 / 255.0 - 1.0
+        new.append(data)
 
+    return np.array(new)
 
 #import data
 #from matplotlib import pyplot

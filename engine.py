@@ -74,7 +74,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             for inputs, targets in epoch_iterator:
 
                 if augment:
-                    augment(inputs, train=True)
+                    inputs = augment(inputs, train=True)
 
                 iteration_count += 1
 
@@ -102,7 +102,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             val_batches = 0
             for inputs, targets in data['validation'].get_epoch_iterator():
                 if augment:
-                    augment(inputs, train=False)
+                    inputs = augment(inputs, train=False)
 
                 loss, acc = val_fn(inputs, targets.ravel())
                 val_loss += loss
@@ -152,7 +152,7 @@ def train(input_var, targets_var, data, network, hyperparams,
     test_batches = 0
     for inputs, targets in data['test'].get_epoch_iterator():
         if augment:
-            augment(inputs, train=False)
+            inputs = augment(inputs, train=False)
 
         loss, acc = val_fn(inputs, targets.ravel())
         test_loss += loss
