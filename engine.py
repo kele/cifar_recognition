@@ -115,7 +115,7 @@ def train(input_var, targets_var, data, network, hyperparams,
             prev_best = best_val_acc
             best_val_acc = max(best_val_acc, val_acc)
 
-            if prev_best - best_val_acc < 0.001:
+            if best_val_acc - prev_best < 0.01:
                 stall_count += 1
             else:
                 best_params = lasagne.layers.get_all_param_values(network)
