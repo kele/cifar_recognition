@@ -82,7 +82,7 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_loss += current_train_loss
                 train_batches += 1
 
-                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 8000))),
+                decay = np.array(1.0 / (max(1.0, 1.5 ** (iteration_count / 4000))),
                                  dtype=theano.config.floatX)
                 learning_rate.set_value(
                     np.array(hyperparams['learning_rate'], dtype=theano.config.floatX) * decay)

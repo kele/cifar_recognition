@@ -69,7 +69,7 @@ def main():
                 data=full_datastream,
                 network=network,
                 verbose=2,
-                patience=5,
+                patience=20,
                 **s)
 
         print('Saving results in 5 seconds...')
