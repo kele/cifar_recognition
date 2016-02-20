@@ -17,9 +17,9 @@ disturbers_list = [
 
 def augmentation(batch, train):
     if train:
-        cifar.transformations.augment_data(batch, disturbers_list)
+        return cifar.transformations.augment_data(batch, disturbers_list)
     else:
-        cifar.transformations.augment_data(batch, None)
+        return cifar.transformations.augment_data(batch, None)
 
 BATCH_SIZE = 100
 
