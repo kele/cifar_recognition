@@ -19,14 +19,14 @@ def build(layers, input_var, batch_size):
 
 
 best_network = [
-    #{'type': DropoutLayer,
-    #    'args': {'p': 0.25}},
-
     {'type': Conv2DLayer,
         'args': {
             'num_filters': 128,
             'filter_size': (5, 5),
             'nonlinearity': rectify}},
+
+    {'type': MaxPool2DLayer,
+        'args': {'pool_size': (2, 2)}},
 
     {'type': Conv2DLayer,
         'args': {
