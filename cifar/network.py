@@ -37,21 +37,6 @@ best_network = [
     {'type': MaxPool2DLayer,
         'args': {'pool_size': (2, 2)}},
 
-    #{'type': DropoutLayer,
-    #    'args': {'p': 0.5}},
-
-    #{'type': Conv2DLayer,
-    #    'args': {
-    #        'num_filters': 64,
-    #        'filter_size': (5, 5),
-    #        'nonlinearity': rectify}},
-
-    #{'type': MaxPool2DLayer,
-    #    'args': {'pool_size': (3, 3)}},
-
-    #{'type': DropoutLayer,
-    #    'args': {'p': 0.5}},
-
     {'type': FlattenLayer,
         'args': {'outdim': 2}},
 
