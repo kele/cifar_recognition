@@ -47,7 +47,7 @@ best_network = [
             'nonlinearity': rectify}},
 
     {'type': MaxPool2DLayer,
-        'args': {'pool_size': (3, 3), 'stride': 2}},
+        'args': {'pool_size': (3, 3)}},
 
     #{'type': DropoutLayer,
     #    'args': {'p': 0.5}},

@@ -49,7 +49,7 @@ def train(input_var, targets_var, data, network, hyperparams,
         print('Finally training starts!')
 
     prev_best = 100000
-    best_train_loss = 100000
+    best_val_loss = 100000
     stall_count = 0
     best_params = lasagne.layers.get_all_param_values(network)
 
@@ -82,7 +82,7 @@ def train(input_var, targets_var, data, network, hyperparams,
                 train_loss += current_train_loss
                 train_batches += 1
 
-                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 4000))),
+                decay = np.array(1.0 / (max(1.0, 2.0 ** (iteration_count / 8000))),
                                  dtype=theano.config.floatX)
                 learning_rate.set_value(
                     np.array(hyperparams['learning_rate'], dtype=theano.config.floatX) * decay)
@@ -95,16 +95,6 @@ def train(input_var, targets_var, data, network, hyperparams,
                     break
 
             train_loss = train_loss / train_batches
-
-            prev_best = best_train_loss
-            best_train_loss = min(best_train_loss, train_loss)
-
-            if prev_best - best_train_loss < 0.001:
-                stall_count += 1
-            else:
-                best_params = lasagne.layers.get_all_param_values(network)
-                stall_count = 0
-
 
             # Validation
             val_loss = 0
@@ -122,6 +112,15 @@ def train(input_var, targets_var, data, network, hyperparams,
             val_acc = (val_acc * 100.0) / val_batches
             val_loss = val_loss / val_batches
 
+            prev_best = best_val_loss
+            best_val_loss = min(best_val_loss, val_loss)
+
+            if prev_best - best_val_loss < 0.001:
+                stall_count += 1
+            else:
+                best_params = lasagne.layers.get_all_param_values(network)
+                stall_count = 0
+
             stop_time = time.time()
             delta_time = stop_time - start_time
 
@@ -133,7 +132,7 @@ def train(input_var, targets_var, data, network, hyperparams,
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
-                print('  best train loss so far: {:.2f}'.format(best_train_loss))
+                print('  best validation loss so far: {:.2f}'.format(best_val_loss))
                 print('  stall_count: {}'.format(stall_count))
 
             if stall_count >= patience:
