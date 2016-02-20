@@ -48,8 +48,8 @@ def train(input_var, targets_var, data, network, hyperparams,
     if verbose:
         print('Finally training starts!')
 
-    prev_best = 100000
-    best_val_loss = 100000
+    prev_best = 0
+    best_val_acc = 0
     stall_count = 0
     best_params = lasagne.layers.get_all_param_values(network)
 
@@ -112,10 +112,10 @@ def train(input_var, targets_var, data, network, hyperparams,
             val_acc = (val_acc * 100.0) / val_batches
             val_loss = val_loss / val_batches
 
-            prev_best = best_val_loss
-            best_val_loss = min(best_val_loss, val_loss)
+            prev_best = best_val_acc
+            best_val_acc = min(best_val_acc, val_acc)
 
-            if prev_best - best_val_loss < 0.001:
+            if prev_best - best_val_acc < 0.001:
                 stall_count += 1
             else:
                 best_params = lasagne.layers.get_all_param_values(network)
@@ -132,7 +132,7 @@ def train(input_var, targets_var, data, network, hyperparams,
                 print('  training loss (avg): {:10.6f}'.format(train_loss))
                 print('  validation loss: {:10.6f}'.format(val_loss))
                 print('  validation accuracy: {:.2f}'.format(val_acc))
-                print('  best validation loss so far: {:.2f}'.format(best_val_loss))
+                print('  best validation acc so far: {:.2f}'.format(best_val_acc))
                 print('  stall_count: {}'.format(stall_count))
 
             if stall_count >= patience:
